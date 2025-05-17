@@ -1,8 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-export type UserRole = 'admin' | 'user';
-
-@Entity()
+@Entity('users')
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -16,8 +14,11 @@ export class User {
     @Column()
     password: string;
 
-    @Column({ type: 'enum', enum: ['admin', 'user'], default: 'user' })
-    role: UserRole;
+    @Column({ default: 'user' })
+    role: string;
+
+    @Column({ type: 'timestamp', nullable: true })
+    lastLoginAt?: Date;
 
     @CreateDateColumn()
     createdAt: Date;
