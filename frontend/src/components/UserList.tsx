@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 
-interface User {
+interface Usuario {
     id: number;
     name: string;
     email: string;
@@ -9,130 +10,86 @@ interface User {
 }
 
 export function UserList() {
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [isEditing, setIsEditing] = useState(false);
-
-    const [editName, setEditName] = useState('');
-    const [editRole, setEditRole] = useState('');
+    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+    const [carregando, setCarregando] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchUsers();
+        const fetchUsuarios = async () => {
+            try {
+                const res = await axios.get('/users', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                });
+                setUsuarios(res.data.data);
+            } catch (error) {
+                console.error('Erro ao buscar usuários:', error);
+                alert('Erro ao buscar usuários');
+            } finally {
+                setCarregando(false);
+            }
+        };
+
+        fetchUsuarios();
     }, []);
 
-    const fetchUsers = async () => {
-        try {
-            const res = await axios.get('/users', {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-            });
-            setUsers(res.data.data); // importante: .data.data
-        } catch (error) {
-            console.error('Erro ao buscar usuários:', error);
-        } finally {
-            setLoading(false);
-        }
+    const handleEditar = (usuario: Usuario) => {
+        navigate(`/admin/usuarios/${usuario.id}/editar`);
     };
-
-    const handleEditClick = (user: User) => {
-        setSelectedUser(user);
-        setEditName(user.name);
-        setEditRole(user.role);
-        setIsEditing(true);
-    };
-
-    const handleEditSubmit = async () => {
-        if (!selectedUser) return;
+    const handleExcluir = async (usuario: Usuario) => {
+        const confirmar = window.confirm(`Tem certeza que deseja excluir o usuário "${usuario.name}"?`);
+        if (!confirmar) return;
 
         try {
-            await axios.patch(`/users/${selectedUser.id}`, {
-                name: editName,
-                role: editRole,
-            }, {
+            await axios.delete(`/users/${usuario.id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
 
-            // Atualizar lista
-            fetchUsers();
-            setIsEditing(false);
-            setSelectedUser(null);
+            // Remover da lista sem recarregar toda a tabela
+            setUsuarios(prev => prev.filter(u => u.id !== usuario.id));
+            alert('Usuário excluído com sucesso!');
         } catch (error) {
-            console.error('Erro ao atualizar usuário:', error);
+            console.error('Erro ao excluir usuário:', error);
+            alert('Erro ao excluir usuário');
         }
     };
-
-    if (loading) return <p>Carregando usuários...</p>;
+    if (carregando) return <p>Carregando usuários...</p>;
 
     return (
         <div className="container mt-4">
-            <h2>Usuários</h2>
+            <h2>Lista de Usuários</h2>
             <table className="table table-bordered">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Email</th>
-                        <th>Função</th>
+                        <th>Tipo</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
+                    {usuarios.map(usuario => (
+                        <tr key={usuario.id}>
+                            <td>{usuario.name}</td>
+                            <td>{usuario.email}</td>
+                            <td>{usuario.role === 'admin' ? 'Administrador' : 'Usuário'}</td>
                             <td>
-                                <button className="btn btn-sm btn-warning me-2" onClick={() => handleEditClick(user)}>
+                                <button
+                                    className="btn btn-sm btn-warning me-2"
+                                    onClick={() => handleEditar(usuario)}
+                                >
                                     Editar
                                 </button>
-                                <button className="btn btn-sm btn-danger">Excluir</button>
+                                <button
+                                    className="btn btn-sm btn-danger"
+                                    onClick={() => handleExcluir(usuario)}
+                                >
+                                    Excluir
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-
-            {isEditing && (
-                <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Editar Usuário</h5>
-                                <button type="button" className="btn-close" onClick={() => setIsEditing(false)}></button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="mb-3">
-                                    <label className="form-label">Nome</label>
-                                    <input
-                                        className="form-control"
-                                        value={editName}
-                                        onChange={(e) => setEditName(e.target.value)}
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Função</label>
-                                    <select
-                                        className="form-select"
-                                        value={editRole}
-                                        onChange={(e) => setEditRole(e.target.value)}
-                                    >
-                                        <option value="user">Usuário</option>
-                                        <option value="admin">Administrador</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
-                                    Cancelar
-                                </button>
-                                <button className="btn btn-primary" onClick={handleEditSubmit}>
-                                    Salvar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

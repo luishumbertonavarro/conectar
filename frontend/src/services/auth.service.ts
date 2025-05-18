@@ -16,6 +16,7 @@ export const authService = {
 
     getToken: () => {
         return localStorage.getItem(TOKEN_KEY);
+        
     },
 
     getProfile: async () => {

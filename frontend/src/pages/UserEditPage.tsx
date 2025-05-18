@@ -20,7 +20,7 @@ export function UserEditPage() {
                 const res = await axios.get(`/users/${id}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
-                setUsuario(res.data.data);
+                setUsuario(res.data);
             } catch (error) {
                 console.error('Erro ao buscar usuário:', error);
                 alert('Erro ao buscar usuário');
@@ -36,11 +36,12 @@ export function UserEditPage() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setUsuario({ ...usuario, [e.target.name]: e.target.value });
     };
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.put(`/users/${id}`, usuario, {
+            await axios.patch(`/users/${id}`, usuario, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
             alert('Usuário atualizado com sucesso!');
@@ -76,6 +77,14 @@ export function UserEditPage() {
                 </div>
 
                 <button type="submit" className="btn btn-primary">Salvar</button>
+                <button
+                    type="button"
+                    className="btn btn-secondary ms-2"
+                    onClick={() => navigate(-1)}
+                >
+                    Voltar
+                </button>
+
             </form>
         </div>
     );

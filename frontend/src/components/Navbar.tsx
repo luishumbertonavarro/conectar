@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { authService } from '../services/auth.service';
@@ -7,11 +6,10 @@ import { useAuth } from '../context/AuthContext';
 export function Navbar() {
     const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const { user, setUser } = useAuth();
+    const { user, logout } = useAuth();
 
     const handleLogout = () => {
-        authService.logout();
-        setUser(null);
+        logout();
         navigate('/login');
     };
 

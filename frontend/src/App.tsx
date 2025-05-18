@@ -33,6 +33,15 @@ function App() {
           }
         />
         <Route
+          path="/admin/usuarios/:id/editar"
+          element={
+            <RoleProtectedRoute role="admin">
+              <UserEditPage />
+            </RoleProtectedRoute>
+          }
+        />
+
+        <Route
           path="/admin/usuarios/:id"
           element={
             <RoleProtectedRoute role="admin">

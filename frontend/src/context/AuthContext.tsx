@@ -1,6 +1,5 @@
-// src/context/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react';
 import axios from '../api/axios';
 
 type User = {
@@ -13,6 +12,7 @@ type AuthContextType = {
     user: User | null;
     loading: boolean;
     setUser: (user: User | null) => void;
+    logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,8 +43,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             .finally(() => setLoading(false));
     }, []);
 
+    const logout = () => {
+        localStorage.removeItem('token');
+        setUser(null);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, setUser }}>
+        <AuthContext.Provider value={{ user, loading, setUser, logout }}>
             {children}
         </AuthContext.Provider>
     );
