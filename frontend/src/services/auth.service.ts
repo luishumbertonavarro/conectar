@@ -9,6 +9,14 @@ export const authService = {
         localStorage.setItem(TOKEN_KEY, token);
         return response.data;
     },
+    register: async (name: string, email: string, password: string) => {
+        const response = await axios.post('/auth/register', {
+            name,
+            email,
+            password,
+        });
+        return response.data;
+    },
 
     logout: () => {
         localStorage.removeItem(TOKEN_KEY);
@@ -16,7 +24,7 @@ export const authService = {
 
     getToken: () => {
         return localStorage.getItem(TOKEN_KEY);
-        
+
     },
 
     getProfile: async () => {

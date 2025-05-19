@@ -35,7 +35,7 @@ export class AuthService {
 
         return this.usersService.create({
             ...userDto,
-            role: 'user', // rol por defecto
+            role: 'user', 
         });
     }
     async login(user: User) {
