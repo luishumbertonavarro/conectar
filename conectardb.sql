@@ -1,0 +1,58 @@
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+--
+-- Host: localhost    Database: conectar_db
+-- ------------------------------------------------------
+-- Server version	8.0.36
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` varchar(36) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `role` varchar(255) NOT NULL DEFAULT 'user',
+  `lastLoginAt` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `IDX_97672ac88f789774dd47f7c8be` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('1257512f-c088-436e-aac0-7690113a72df','probador 5','prueba5@example.com','$2b$10$epTNEDDZOyGF0NWu2AQ/d.PhOGRszPJZCbpCAtgWAsldnpBlCKvmO','2025-05-17 15:58:37.423218','2025-05-17 15:58:37.423218','user',NULL),('163b45e9-bca8-465e-9cc1-cae54eb9718a','Beto Test','beto@example.com','$2b$10$Ajf5XmZaxV7DKVbIAPj0..GIWNm8cq4SlkJycUdJZQcOYYyetKCo.','2025-05-14 18:33:37.929255','2025-05-18 21:59:44.000000','admin','2025-05-19 00:59:44'),('260295fd-ba8d-47ca-8d7f-662ba98c598b','pruebaregistro','p2@a.com','$2b$10$LUTMr5sE5IXm9fkU7/6J5O4kLXV.2F3vxxHbyTtkztJJZ7Upjn6lC','2025-05-18 22:21:45.174995','2025-05-18 22:21:45.174995','user',NULL),('4183c45c-4369-4a37-9a48-ccd204e2cc79','p3','p3@g.com','$2b$10$McN7UJRDg5uW7yCK7FZ6r.hudqMkjI/i8diYGmZlZVG5f6ViP2v4G','2025-05-18 22:26:54.151661','2025-05-18 22:26:54.151661','user',NULL),('919e80eb-1712-42f2-9307-a46de93abf5a','Juan perez','juan@example.com','$2b$10$nsLfkZgqsaDygTGZIIG3BuU.vval1g7avfRAQ2ISfoVoBQuPFvr0m','2025-05-14 17:54:35.959314','2025-05-18 00:56:22.000000','user','2025-05-18 03:56:22'),('c60e256b-1cd4-45d2-aafc-275ab8d37e35','p5','pp7@g.com','$2b$10$OjhcJ3XXpT/xKsMmohwAfO/ZIBOvF8Dgu/AE3Kh6m4jDiALnH364G','2025-05-18 22:29:15.261200','2025-05-18 22:29:15.261200','user',NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-05-19  0:08:28
