@@ -41,3 +41,44 @@ Projeto full-stack utilizando **NestJS** (Backend) e **React + TypeScript** (Fro
 ```bash
 git clone https://github.com/luishumbertonavarro/conectar.git
 cd conectar
+cd backend 
+```
+backend
+```
+cd backend
+cp .env.example .env   # Configure as variáveis de ambiente
+npm install
+npm run start:dev
+```
+frontend
+```
+cd frontend
+npm install
+npm run dev
+```
+🧪 Rotas principais
+API (NestJS)
+POST /auth/login - Login
+
+GET /users/profile - Perfil do usuário logado
+
+GET /users - Lista de usuários (admin)
+
+POST /users - Criar novo usuário (admin)
+
+PATCH /users/:id - Atualizar usuário (admin)
+
+DELETE /users/:id - Excluir usuário (admin)
+
+Frontend
+/login - Tela de login
+
+/admin/usuarios - Lista de usuários (somente admin)
+
+/admin/usuarios/:id/editar - Editar usuário
+
+/admin/registro - Cadastrar novo usuário (somente admin)
+
+/dashboard - Página inicial do usuário logado
+
+Desenvolvido por Luis Humberto Navarro Ribeiro
